@@ -112,6 +112,9 @@ export class ExamStack extends cdk.Stack {
       },
     });
 
+    lambdaXFn.addEnvironment("QUEUE_B_URL", queueB.queueUrl);
+    queueB.grantSendMessages(lambdaXFn);
+
     const lambdaYFn = new lambdanode.NodejsFunction(this, "LambdaYFn", {
       architecture: lambda.Architecture.ARM_64,
       runtime: lambda.Runtime.NODEJS_22_X,
@@ -123,6 +126,9 @@ export class ExamStack extends cdk.Stack {
       },
     });
     
+    lambdaXFn.addEventSource(new events.SqsEventSource(queueA));
+
+
   }
 }
   
