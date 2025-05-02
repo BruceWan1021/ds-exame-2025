@@ -70,8 +70,15 @@ export class ExamStack extends cdk.Stack {
       },
     });
 
-    const anEndpoint = api.root.addResource("patha");
+    //permission
+    table.grantReadData(question1Fn);
 
+    const crewResource = api.root.addResource("crew");
+    const roleResource = crewResource.addResource("{role}")
+    const moviesResource = roleResource.addResource("movies");
+    const movieIdResource = moviesResource.addResource("{movieId}");
+
+    movieIdResource.addMethod("GET", new apig.LambdaIntegration(question1Fn, { proxy: true }));
 
     // ==================================
     // Question 2 - Event-Driven architecture
