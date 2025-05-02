@@ -144,7 +144,9 @@ export class ExamStack extends cdk.Stack {
       },
     }));
 
-
+    new cdk.CfnOutput(this, "newImageTopicArn", {
+      value: topic1.topicArn,
+    });
 
   }
 }
