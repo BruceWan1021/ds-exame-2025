@@ -128,6 +128,23 @@ export class ExamStack extends cdk.Stack {
     
     lambdaXFn.addEventSource(new events.SqsEventSource(queueA));
 
+    topic1.addSubscription(new subs.SqsSubscription(queueA, {
+      filterPolicy: {
+        country: sns.SubscriptionFilter.stringFilter({
+          allowlist: ["Ireland", "China"],
+        }),
+      },
+    }));
+
+    topic1.addSubscription(new subs.LambdaSubscription(lambdaYFn, {
+      filterPolicy: {
+        country: sns.SubscriptionFilter.stringFilter({
+          denylist: ["Ireland", "China"],
+        }),
+      },
+    }));
+
+
 
   }
 }
